@@ -53,7 +53,7 @@ settings$outdir <- file.path(normalizePath("."), "mxg_54")
 settings_54 <- PEcAn.settings::prepare.settings(settings, force=FALSE)
 settings$pfts$pft$name <- "mxg_79"
 settings$outdir <- file.path(normalizePath("."), "mxg_79")
-settings_54 <- PEcAn.settings::prepare.settings(settings, force=FALSE)
+settings_79 <- PEcAn.settings::prepare.settings(settings, force=FALSE)
 
 ```
 
