@@ -1,0 +1,80 @@
+# PEcAn workflow: Test-run BioCro with cultivar-specific PFTs
+
+```{r, echo=FALSE,warning=FALSE}
+library(PEcAn.all)
+
+```
+
+## Populate PFT table
+
+BETY-0 does already contain cultivar-specific PFTs for switchgrass, but I don't have a BioCro switchgrass configuration handy.
+Instead I'll add two new PFTs for the unnamed Miscanthus cultivars '54' and '79'.
+
+```{sh pfts}
+psql -U bety < cultivar_pft_mxg.sql
+```
+
+
+## Load PEcAn settings file
+
+Rather than store multiple copies of settings.xml, for this demo I'm using a single settings list that I'll edit as I go.
+
+But first we need to set a bunch of paths -- The absolute paths in settings.xml probably don't exist on your machine. 
+BTW, Do I really need to use absolute paths for all of these? I haven't found a way to avoid it, but maybe I missed a memo.
+
+```{r read.settings}
+settings <- PEcAn.settings::read.settings("settings.xml")
+
+settings$database$dbfiles <- file.path(normalizePath("."), "dbfiles")
+# TODO can I delete model$binary outright and count on bety to fill it in?
+settings$model$binary <- system.file("biocro.Rscript", package="PEcAn.BIOCRO")
+settings$run$inputs$met$path <- file.path(system.file("tests/testthat/data", package="PEcAn.BIOCRO"), "US-Bo1")
+```
+
+OK, NOW I'll edit for each cultivar as I go.
+
+```{r setcultivar}
+settings$pfts$pft$name <- "mxg_54"
+settings$outdir <- file.path(normalizePath("."), "mxg_54")
+settings_54 <- PEcAn.settings::prepare.settings(settings, force=FALSE)
+settings$pfts$pft$name <- "mxg_79"
+settings$outdir <- file.path(normalizePath("."), "mxg_79")
+settings_54 <- PEcAn.settings::prepare.settings(settings, force=FALSE)
+
+```
+
+## Run meta-analysis
+
+```{r meta-analysis}
+
+settings_54 <- runModule.get.trait.data(settings_54)
+runModule.run.meta.analysis(settings_54)
+settings_79 <- runModule.get.trait.data(settings_79)
+runModule.run.meta.analysis(settings_79)
+
+```
+
+If you made it this far without trouble and the reported meta-analyis numbers look OK, the core cultivar-PFT functionality is working. Now let's run a model! The rest of this workflow assumes you already have BioCro 0.95 installed and configured.
+
+```{r run.write.configs}
+settings_54 <- runModule.run.write.configs(settings_54)
+settings_79 <- runModule.run.write.configs(settings_79)
+```
+
+```{r run-model}
+
+runModule.start.model.runs(settings_54)
+runModule.start.model.runs(settings_79)
+runModule.get.results(settings_54)
+runModule.get.results(settings_79)
+
+```
+
+If this all works, we're ready for ensembles, sensivity analysis and variance decomposition:
+
+```{r model-analysis}
+run.sensitivity.analysis(settings_54)
+run.sensitivity.analysis(settings_79)
+run.ensemble.analysis(settings_54, plot.timeseries=TRUE)
+run.ensemble.analysis(settings_79, plot.timeseries=TRUE)
+```

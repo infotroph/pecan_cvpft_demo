@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<pecan>
+  <outdir>pecan</outdir>
+
+  <database>
+    <bety>
+      <driver>PostgreSQL</driver>
+      <user>bety</user>
+      <password>bety</password>
+      <host>localhost</host>
+      <dbname>bety</dbname>
+      <write>FALSE</write>
+    </bety>
+    <dbfiles>/Users/chrisb/Desktop/pecan_test/cultivar_test/pecan/dbfiles</dbfiles>
+  </database>
+
+  <pfts>
+    <pft>
+      <name>mxg_54</name>
+      <constants>
+        <file>miscanthus_default.xml</file>
+      </constants>
+    </pft>
+  </pfts>
+
+  <ensemble>
+    <variable>AbvGrndWood</variable>
+    <size>10</size>
+  </ensemble>
+
+  <meta.analysis>
+    <iter>50</iter>
+    <random.effects>FALSE</random.effects>
+    <threshold>1.2</threshold>
+    <update>AUTO</update>
+  </meta.analysis>
+
+  <sensitivity.analysis>
+    <quantiles>
+      <sigma>-1</sigma>
+      <sigma>1</sigma>
+    </quantiles>
+    <variable>AbvGrndWood</variable>
+  </sensitivity.analysis>
+
+  <model>
+    <type>BIOCRO</type>
+    <binary>/Users/chrisb/github_forks/pecan/models/biocro/inst/biocro.Rscript</binary>
+    <revision>0.95</revision>
+  </model>
+
+  <run>
+    <site>
+      <id>753</id>
+    </site>
+    <inputs>
+      <met>
+        <output>BIOCRO</output>
+        <path>/Users/chrisb/github_forks/pecan/models/biocro/tests/testthat/data/US-Bo1</path>
+      </met>
+    </inputs>
+      <start.date>2004/01/01</start.date>
+      <end.date>2004/12/30</end.date>
+  </run>
+
+  <host>
+    <name>localhost</name>
+  </host>
+</pecan>
