@@ -4,7 +4,7 @@
 
 ```{r, echo=FALSE,warning=FALSE}
 library(PEcAn.all)
-
+library(PEcAn.workflow) # This should be added to PEcAn.all!
 ```
 
 ### Pull branch, build
