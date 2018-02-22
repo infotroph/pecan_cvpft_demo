@@ -1,11 +1,25 @@
 # PEcAn workflow: Test-run BioCro with cultivar-specific PFTs
 
+## Setup
+
 ```{r, echo=FALSE,warning=FALSE}
 library(PEcAn.all)
 
 ```
 
-## Populate PFT table
+### Pull branch, build
+
+Get the `cultivars-in-pfts` branch from my PEcAn fork (I probably should have pushed this to a branch in PecanProject before opening the PR...)
+
+```{sh getbranch}
+cd $YOUR_PECAN_DIR
+git remote add infotroph https://github.com/infotoph/pecan.git
+git checkout -b cultivars-in-pfts infotroph/cultivars-in-pfts
+make
+cd -
+```
+
+### Populate PFT table
 
 BETY-0 does already contain cultivar-specific PFTs for switchgrass, but I don't have a BioCro switchgrass configuration handy.
 Instead I'll add two new PFTs for the unnamed Miscanthus cultivars '54' and '79'.
