@@ -2,11 +2,6 @@
 
 ## Setup
 
-```{r, echo=FALSE,warning=FALSE}
-library(PEcAn.all)
-library(PEcAn.workflow) # This should be added to PEcAn.all!
-```
-
 ### Pull branch, build
 
 Get the `cultivars-in-pfts` branch from my PEcAn fork (I probably should have pushed this to a branch in PecanProject before opening the PR...)
@@ -32,6 +27,12 @@ This means model runs with PFT `mxg_79` are effectively priors-only, which limit
 psql -U bety < cultivar_pft_mxg.sql
 ```
 
+### Prepare R session
+
+```{r, echo=FALSE,warning=FALSE}
+library(PEcAn.all)
+library(PEcAn.workflow) # This should be added to PEcAn.all!
+```
 
 ## Load PEcAn settings file
 
